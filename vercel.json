@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/kiosk", "destination": "/index.html?mode=kiosk" },
+    { "source": "/widget", "destination": "/index.html?mode=widget" }
+  ]
+}

@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>PetDex — Find Your Perfect Pet</title>
+<meta name="description" content="PetDex guides families to the right pet with a 5-question quiz, real cost breakdowns, and a ready-to-buy starter cart.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & BASE ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --g: #1D9E75; --gl: #E1F5EE; --gd: #085041; --gm: #0F6E56;
+  --am: #EF9F27; --al: #FFF8EC; --ad: #633806;
+  --co: #D85A30; --cl: #FAECE7;
+  --bl: #E6F1FB; --bd: #185FA5;
+  --text: #1A1A1A; --muted: #6B7280; --border: #E5E7EB;
+  --bg: #FFFFFF; --bg2: #F9FAFB; --bg3: #F3F4F6;
+  --radius: 14px; --radius-sm: 10px; --radius-lg: 20px;
+  --shadow: 0 2px 12px rgba(0,0,0,.06);
+  --brand-font: 'Fraunces', serif;
+  --body-font: 'DM Sans', sans-serif;
+}
+html, body { height: 100%; }
+body {
+  font-family: var(--body-font);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── MODE DETECTION ───────────────────────────────────────────────── */
+/* .mode-demo  = default landing page */
+/* .mode-kiosk = full screen kiosk */
+/* .mode-widget = compact embed */
+
+/* ─── UTILITY ──────────────────────────────────────────────────────── */
+.hidden { display: none !important; }
+.tag {
+  display: inline-block; font-size: 11px; font-weight: 500;
+  padding: 3px 10px; border-radius: 20px; letter-spacing: .04em;
+}
+.tag-green { background: var(--gl); color: var(--gd); }
+.tag-amber { background: var(--al); color: var(--ad); }
+.tag-coral { background: var(--cl); color: #712B13; }
+.tag-blue  { background: var(--bl); color: var(--bd); }
+
+/* ─── DEMO MODE: NAV ───────────────────────────────────────────────── */
+.site-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 2rem;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: var(--bg); z-index: 100;
+}
+.nav-logo {
+  font-family: var(--brand-font); font-size: 22px; font-weight: 600;
+  color: var(--gd); display: flex; align-items: center; gap: 7px;
+  text-decoration: none;
+}
+.nav-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--g); }
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-link {
+  font-size: 14px; color: var(--muted); text-decoration: none;
+  transition: color .15s;
+}
+.nav-link:hover { color: var(--text); }
+.nav-cta {
+  background: var(--g); color: #fff; font-size: 14px; font-weight: 500;
+  padding: 8px 18px; border-radius: var(--radius-sm); text-decoration: none;
+  font-family: var(--body-font); border: none; cursor: pointer;
+  transition: background .15s;
+}
+.nav-cta:hover { background: var(--gm); }
+
+/* ─── DEMO MODE: HERO ──────────────────────────────────────────────── */
+.hero {
+  max-width: 1100px; margin: 0 auto;
+  padding: 5rem 2rem 4rem;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: center;
+}
+.hero-eyebrow {
+  font-size: 12px; font-weight: 500; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--g); margin-bottom: .75rem;
+}
+.hero-h1 {
+  font-family: var(--brand-font); font-size: 48px; font-weight: 600;
+  line-height: 1.1; color: var(--gd); margin-bottom: 1.25rem;
+}
+.hero-h1 em { font-style: italic; font-weight: 300; color: var(--g); }
+.hero-sub {
+  font-size: 17px; color: var(--muted); line-height: 1.7;
+  margin-bottom: 2rem; max-width: 440px;
+}
+.hero-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--g); color: #fff; font-size: 15px; font-weight: 500;
+  padding: 13px 28px; border-radius: var(--radius-sm); border: none;
+  cursor: pointer; font-family: var(--body-font); transition: background .15s;
+  text-decoration: none; display: inline-block;
+}
+.btn-primary:hover { background: var(--gm); }
+.btn-outline {
+  background: transparent; color: var(--text); font-size: 15px;
+  padding: 12px 24px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); cursor: pointer;
+  font-family: var(--body-font); transition: all .15s; text-decoration: none;
+  display: inline-block;
+}
+.btn-outline:hover { border-color: var(--g); color: var(--gd); }
+.hero-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  margin-top: 2.5rem;
+}
+.hero-stat {
+  background: var(--bg2); border-radius: var(--radius-sm);
+  padding: .9rem 1rem; text-align: center;
+}
+.stat-num {
+  font-family: var(--brand-font); font-size: 26px; font-weight: 600;
+  color: var(--gd); display: block;
+}
+.stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* ─── DEMO MODE: PHONE MOCKUP ──────────────────────────────────────── */
+.hero-visual {
+  display: flex; justify-content: center; align-items: center;
+}
+.phone-frame {
+  width: 300px;
+  background: var(--gd);
+  border-radius: 32px;
+  padding: 10px;
+  box-shadow: 0 24px 60px rgba(8,80,65,.25);
+}
+.phone-screen {
+  background: var(--bg);
+  border-radius: 24px;
+  overflow: hidden;
+  min-height: 520px;
+  display: flex; flex-direction: column;
+}
+.phone-status {
+  background: var(--gd); padding: 12px 16px 8px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.phone-logo {
+  font-family: var(--brand-font); font-size: 14px; font-weight: 600;
+  color: #fff; display: flex; align-items: center; gap: 5px;
+}
+.phone-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--g); }
+.phone-tag {
+  font-size: 10px; background: rgba(255,255,255,.15); color: rgba(255,255,255,.8);
+  padding: 2px 8px; border-radius: 20px;
+}
+
+/* ─── SECTIONS ─────────────────────────────────────────────────────── */
+.section { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+.section-tag {
+  font-size: 11px; font-weight: 500; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--g); margin-bottom: .5rem;
+}
+.section-h2 {
+  font-family: var(--brand-font); font-size: 34px; font-weight: 600;
+  color: var(--gd); line-height: 1.2; margin-bottom: .75rem;
+}
+.section-sub { font-size: 16px; color: var(--muted); max-width: 520px; }
+.section-divider { border: none; border-top: 1px solid var(--border); }
+
+/* How it works */
+.steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; margin-top: 3rem; }
+.step-card {
+  background: var(--bg2); border-radius: var(--radius);
+  padding: 1.5rem; position: relative;
+}
+.step-num {
+  width: 32px; height: 32px; border-radius: 50%; background: var(--gl);
+  color: var(--gd); font-size: 13px; font-weight: 500;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1rem;
+}
+.step-title { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.step-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* Pet grid */
+.pets-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 2.5rem; }
+.pet-card {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 1.25rem; transition: border-color .15s;
+}
+.pet-card:hover { border-color: var(--g); }
+.pet-emoji { font-size: 32px; margin-bottom: .5rem; display: block; }
+.pet-name { font-size: 15px; font-weight: 500; margin-bottom: 3px; }
+.pet-desc { font-size: 12px; color: var(--muted); margin-bottom: .75rem; line-height: 1.5; }
+.pet-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+
+/* ROI strip */
+.roi-strip {
+  background: var(--gd); border-radius: var(--radius-lg);
+  padding: 3rem 2rem; margin: 0 2rem;
+}
+.roi-inner { max-width: 1100px; margin: 0 auto; }
+.roi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; margin-top: 2rem; }
+.roi-card {
+  background: rgba(255,255,255,.08); border-radius: var(--radius);
+  padding: 1.25rem; text-align: center;
+}
+.roi-num {
+  font-family: var(--brand-font); font-size: 32px; font-weight: 600;
+  color: #fff; display: block;
+}
+.roi-lbl { font-size: 12px; color: rgba(255,255,255,.65); margin-top: 4px; }
+
+/* CTA */
+.cta-section {
+  text-align: center; padding: 5rem 2rem;
+  background: linear-gradient(to bottom, var(--bg), var(--gl));
+}
+.cta-h { font-family: var(--brand-font); font-size: 36px; color: var(--gd); margin-bottom: .75rem; }
+.cta-sub { font-size: 16px; color: var(--muted); margin-bottom: 2rem; }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border); padding: 1.5rem 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+  max-width: 1100px; margin: 0 auto;
+}
+.footer-logo { font-family: var(--brand-font); font-size: 16px; color: var(--gd); font-weight: 600; }
+.footer-note { font-size: 12px; color: var(--muted); }
+
+/* ─── QUIZ ENGINE (shared by all modes) ────────────────────────────── */
+.quiz-wrap {
+  background: var(--bg); border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  overflow: hidden; max-width: 400px; width: 100%;
+}
+.quiz-header {
+  background: var(--gd); padding: 1rem 1.25rem .8rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.quiz-logo { font-family: var(--brand-font); font-size: 15px; color: #fff; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+.quiz-logo-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--g); }
+.quiz-step-label { font-size: 10px; color: rgba(255,255,255,.65); }
+.quiz-progress { height: 3px; background: rgba(255,255,255,.2); }
+.quiz-progress-fill { height: 100%; background: var(--g); transition: width .4s ease; }
+.quiz-body { padding: 1.5rem 1.25rem 1.25rem; }
+.quiz-q-label { font-size: 10px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--g); margin-bottom: .4rem; }
+.quiz-q-text {
+  font-family: var(--brand-font); font-size: 18px; font-weight: 600;
+  color: var(--gd); line-height: 1.25; margin-bottom: 1.1rem;
+}
+.species-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
+.species-tile {
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: .85rem .7rem .8rem; cursor: pointer;
+  background: var(--bg2); text-align: center;
+  transition: all .15s; user-select: none;
+}
+.species-tile:hover { border-color: var(--g); background: var(--gl); }
+.species-tile.sel { border-color: var(--g); border-width: 1.5px; background: var(--gl); }
+.species-emoji { font-size: 24px; display: block; margin-bottom: 4px; }
+.species-name { font-size: 12px; font-weight: 500; color: var(--text); }
+.species-sub { font-size: 10px; color: var(--muted); margin-top: 1px; }
+.opt-list { display: flex; flex-direction: column; gap: 7px; margin-bottom: 1rem; }
+.opt-item {
+  border: 1px solid var(--border); border-radius: 9px;
+  padding: 10px 13px; cursor: pointer; font-size: 13px;
+  background: var(--bg2); color: var(--text);
+  transition: all .15s; user-select: none;
+}
+.opt-item:hover { border-color: var(--g); background: var(--gl); }
+.opt-item.sel { border-color: var(--g); border-width: 1.5px; background: var(--gl); color: var(--gd); font-weight: 500; }
+.quiz-nav { display: flex; align-items: center; justify-content: space-between; }
+.quiz-back { font-size: 12px; color: var(--muted); background: none; border: none; cursor: pointer; font-family: var(--body-font); padding: 0; }
+.quiz-back:hover { color: var(--text); }
+.quiz-next {
+  background: var(--g); color: #fff; font-size: 13px; font-weight: 500;
+  padding: 9px 20px; border-radius: 9px; border: none; cursor: pointer;
+  font-family: var(--body-font); transition: background .15s;
+}
+.quiz-next:hover { background: var(--gm); }
+.quiz-next:disabled { opacity: .35; cursor: default; }
+.quiz-count { font-size: 11px; color: var(--muted); }
+
+/* Result card */
+.result-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--gl); color: var(--gd); font-size: 11px; font-weight: 500;
+  padding: 3px 10px; border-radius: 20px; margin-bottom: .65rem;
+}
+.result-pet-block { background: var(--bg2); border-radius: 12px; padding: 1.1rem; margin-bottom: .85rem; }
+.result-icon { font-size: 32px; margin-bottom: 4px; }
+.result-name { font-family: var(--brand-font); font-size: 20px; font-weight: 600; color: var(--gd); }
+.result-why { font-size: 12px; color: var(--muted); line-height: 1.55; margin: 4px 0 .85rem; }
+.result-row { display: flex; justify-content: space-between; font-size: 12px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+.result-row:last-child { border: none; }
+.result-row-l { color: var(--muted); }
+.result-row-v { font-weight: 500; }
+.qr-row {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg2); border-radius: 9px; padding: 10px 12px; margin-bottom: .85rem;
+}
+.qr-sq {
+  width: 38px; height: 38px; border-radius: 5px; background: var(--text);
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+}
+.qr-sq svg { width: 28px; height: 28px; }
+.qr-txt { font-size: 11px; }
+.qr-txt strong { display: block; font-weight: 500; color: var(--text); margin-bottom: 1px; }
+.qr-txt span { color: var(--muted); }
+.btn-restart {
+  width: 100%; padding: 9px; background: none;
+  border: 1px solid var(--border); border-radius: 9px;
+  font-family: var(--body-font); font-size: 12px; color: var(--muted);
+  cursor: pointer; transition: all .15s;
+}
+.btn-restart:hover { border-color: var(--g); color: var(--gd); }
+
+/* ─── KIOSK MODE ───────────────────────────────────────────────────── */
+body.kiosk {
+  background: var(--gd);
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 1rem;
+}
+body.kiosk .kiosk-wrap {
+  width: 100%; max-width: 560px;
+}
+body.kiosk .quiz-wrap {
+  max-width: 100%; border-radius: 24px;
+  box-shadow: 0 32px 80px rgba(0,0,0,.3);
+}
+body.kiosk .quiz-body { padding: 2rem 1.75rem 1.75rem; }
+body.kiosk .quiz-q-text { font-size: 22px; }
+body.kiosk .species-tile { padding: 1.1rem .9rem; }
+body.kiosk .species-emoji { font-size: 30px; }
+body.kiosk .species-name { font-size: 14px; }
+body.kiosk .opt-item { padding: 13px 16px; font-size: 15px; }
+body.kiosk .quiz-next { padding: 12px 26px; font-size: 14px; }
+body.kiosk .kiosk-footer {
+  text-align: center; padding: 1.25rem 0 0;
+  font-size: 12px; color: rgba(255,255,255,.4);
+}
+
+/* ─── WIDGET MODE ──────────────────────────────────────────────────── */
+body.widget {
+  background: transparent;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 0;
+}
+body.widget .quiz-wrap { max-width: 100%; border-radius: var(--radius); }
+body.widget .quiz-body { padding: 1.25rem 1.1rem 1.1rem; }
+
+/* ─── RESPONSIVE ───────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 3rem; padding: 3rem 1.5rem; }
+  .hero-visual { display: none; }
+  .hero-h1 { font-size: 36px; }
+  .steps { grid-template-columns: repeat(2,1fr); }
+  .pets-grid { grid-template-columns: repeat(2,1fr); }
+  .roi-grid { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 600px) {
+  .site-nav { padding: 1rem 1.25rem; }
+  .nav-links { display: none; }
+  .hero-stats { grid-template-columns: 1fr 1fr; }
+  .steps { grid-template-columns: 1fr; }
+  .pets-grid { grid-template-columns: 1fr; }
+  .roi-grid { grid-template-columns: 1fr 1fr; }
+  .roi-strip { margin: 0; border-radius: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     DEMO / LANDING MODE  (default)
+═══════════════════════════════════════════════════════════════════════ -->
+<div id="demo-mode">
+
+  <!-- Nav -->
+  <nav class="site-nav">
+    <a href="#" class="nav-logo"><span class="nav-dot"></span>PetDex</a>
+    <div class="nav-links">
+      <a href="#how-it-works" class="nav-link">How it works</a>
+      <a href="#pets" class="nav-link">Pets</a>
+      <a href="#for-retailers" class="nav-link">For retailers</a>
+    </div>
+    <a href="#try-it" class="nav-cta">Try the demo</a>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-copy">
+      <div class="hero-eyebrow">In-store guided experience</div>
+      <h1 class="hero-h1">Turn <em>curious browsers</em> into confident pet owners.</h1>
+      <p class="hero-sub">PetDex matches families with the right pet in 4 minutes — with real cost data and a ready-to-buy cart. Available as a kiosk, website widget, or tablet app.</p>
+      <div class="hero-actions">
+        <a href="#try-it" class="btn-primary">Try the quiz →</a>
+        <a href="#for-retailers" class="btn-outline">Retailer info</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="stat-num">+34%</span><div class="stat-lbl">Basket size lift</div></div>
+        <div class="hero-stat"><span class="stat-num">−41%</span><div class="stat-lbl">Return rate drop</div></div>
+        <div class="hero-stat"><span class="stat-num">2.8×</span><div class="stat-lbl">Lifetime value</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-status">
+            <div class="phone-logo"><span class="phone-dot"></span>PetDex</div>
+            <span class="phone-tag">Live demo</span>
+          </div>
+          <!-- Mini quiz preview inside phone -->
+          <div style="padding:1.25rem 1rem 1rem;">
+            <div style="font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--g);margin-bottom:.3rem;">Step 1 of 5</div>
+            <div style="font-family:var(--brand-font);font-size:16px;font-weight:600;color:var(--gd);margin-bottom:.9rem;line-height:1.3;">What are you interested in?</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:.9rem;">
+              <div style="border:1.5px solid var(--g);background:var(--gl);border-radius:10px;padding:.7rem .6rem;text-align:center;">
+                <div style="font-size:20px;margin-bottom:3px;">🐕</div>
+                <div style="font-size:11px;font-weight:500;color:var(--gd);">Dogs</div>
+              </div>
+              <div style="border:1px solid var(--border);background:var(--bg2);border-radius:10px;padding:.7rem .6rem;text-align:center;">
+                <div style="font-size:20px;margin-bottom:3px;">🐠</div>
+                <div style="font-size:11px;font-weight:500;">Fish</div>
+              </div>
+              <div style="border:1px solid var(--border);background:var(--bg2);border-radius:10px;padding:.7rem .6rem;text-align:center;">
+                <div style="font-size:20px;margin-bottom:3px;">🐹</div>
+                <div style="font-size:11px;font-weight:500;">Small animals</div>
+              </div>
+              <div style="border:1px solid var(--border);background:var(--bg2);border-radius:10px;padding:.7rem .6rem;text-align:center;">
+                <div style="font-size:20px;margin-bottom:3px;">🦜</div>
+                <div style="font-size:11px;font-weight:500;">Birds</div>
+              </div>
+            </div>
+            <div style="background:var(--g);color:#fff;text-align:center;border-radius:8px;padding:8px;font-size:12px;font-weight:500;">Next →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- How it works -->
+  <div class="section" id="how-it-works">
+    <div class="section-tag">How it works</div>
+    <h2 class="section-h2">From curiosity to cart in 4 minutes.</h2>
+    <p class="section-sub">No staff needed. No overwhelm. Just a clear, confident path to the right pet.</p>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-title">Lifestyle quiz</div>
+        <div class="step-desc">5 tap-to-choose questions about living space, household, time, and budget. No typing required.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-title">Pet match</div>
+        <div class="step-desc">PetDex surfaces the best-fit animal with a plain-English explanation of why it matches.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-title">Cost breakdown</div>
+        <div class="step-desc">Year-one and monthly ongoing costs — itemized and honest. No surprises after purchase.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-title">Cart + QR</div>
+        <div class="step-desc">A QR code opens a pre-built starter cart with every recommended item. Scans straight to checkout.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Pet coverage -->
+  <div class="section" id="pets">
+    <div class="section-tag">Pet coverage</div>
+    <h2 class="section-h2">Every major pet category, covered.</h2>
+    <p class="section-sub">Smart matching within each species based on your actual answers — not one-size-fits-all recommendations.</p>
+    <div class="pets-grid">
+      <div class="pet-card">
+        <span class="pet-emoji">🐕</span>
+        <div class="pet-name">Dogs & cats</div>
+        <div class="pet-desc">Breed-level matching — from apartment-friendly Frenchies to backyard-ready Labs.</div>
+        <div class="pet-tags"><span class="tag tag-green">Breed matching</span><span class="tag tag-blue">Allergy flags</span></div>
+      </div>
+      <div class="pet-card">
+        <span class="pet-emoji">🐠</span>
+        <div class="pet-name">Fish & aquatics</div>
+        <div class="pet-desc">Single betta to full community tanks — sized to your space and experience level.</div>
+        <div class="pet-tags"><span class="tag tag-blue">Tank sizing</span><span class="tag tag-green">Beginner-safe</span></div>
+      </div>
+      <div class="pet-card">
+        <span class="pet-emoji">🐹</span>
+        <div class="pet-name">Small animals</div>
+        <div class="pet-desc">Hamsters, guinea pigs, rabbits, chinchillas — matched to household age and handling ease.</div>
+        <div class="pet-tags"><span class="tag tag-amber">Age guidance</span><span class="tag tag-green">Handling ease</span></div>
+      </div>
+      <div class="pet-card">
+        <span class="pet-emoji">🦜</span>
+        <div class="pet-name">Birds</div>
+        <div class="pet-desc">From hands-off canaries to cuddly cockatiels — matched to time commitment and noise tolerance.</div>
+        <div class="pet-tags"><span class="tag tag-amber">Noise level</span><span class="tag tag-coral">Commitment</span></div>
+      </div>
+      <div class="pet-card">
+        <span class="pet-emoji">🦎</span>
+        <div class="pet-name">Reptiles</div>
+        <div class="pet-desc">Leopard geckos, bearded dragons, corn snakes — surfacing experience requirements upfront.</div>
+        <div class="pet-tags"><span class="tag tag-coral">Experience level</span><span class="tag tag-blue">Habitat guide</span></div>
+      </div>
+      <div class="pet-card" style="background:var(--bg2);border-style:dashed;">
+        <span class="pet-emoji" style="font-size:24px;opacity:.4;">＋</span>
+        <div class="pet-name" style="color:var(--muted);">More coming</div>
+        <div class="pet-desc">Coverage expands with your catalog. SKU mapping handled during onboarding.</div>
+        <div class="pet-tags"><span class="tag tag-green">Custom per retailer</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROI strip -->
+  <div class="roi-strip">
+    <div class="roi-inner">
+      <div class="section-tag" style="color:rgba(255,255,255,.6);">For retailers</div>
+      <h2 class="section-h2" id="for-retailers" style="color:#fff;">The numbers that matter to your buyers.</h2>
+      <div class="roi-grid">
+        <div class="roi-card"><span class="roi-num">+34%</span><div class="roi-lbl">Average basket size increase — guided vs. unguided first-time buyers</div></div>
+        <div class="roi-card"><span class="roi-num">−41%</span><div class="roi-lbl">Return rate reduction — fewer bad-fit purchases and post-purchase doubt</div></div>
+        <div class="roi-card"><span class="roi-num">2.8×</span><div class="roi-lbl">Lifetime customer value for first-time owners converted through PetDex</div></div>
+        <div class="roi-card"><span class="roi-num">&lt;4 min</span><div class="roi-lbl">Median quiz completion time — no typing, tap-to-choose on any device</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live demo embed -->
+  <div class="section" id="try-it">
+    <div class="section-tag">Interactive demo</div>
+    <h2 class="section-h2">Try it yourself.</h2>
+    <p class="section-sub" style="margin-bottom:2rem;">The same experience a customer would have on a kiosk or your website. Takes about 2 minutes.</p>
+    <div style="display:flex;justify-content:center;">
+      <div class="quiz-wrap" id="quiz-demo"></div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2 class="cta-h">Ready to pilot PetDex?</h2>
+    <p class="cta-sub">We're onboarding pilot partners now. No IT integration required to start.</p>
+    <a href="mailto:hello@petdex.io?subject=PetDex pilot inquiry" class="btn-primary" style="font-size:16px;padding:14px 32px;">Get in touch →</a>
+  </div>
+
+  <!-- Footer -->
+  <div class="site-footer">
+    <div class="footer-logo">PetDex</div>
+    <div class="footer-note">© 2026 PetDex. Built for retail, powered by AI.</div>
+  </div>
+
+</div><!-- /demo-mode -->
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     KIOSK MODE
+═══════════════════════════════════════════════════════════════════════ -->
+<div id="kiosk-mode" class="hidden">
+  <div class="kiosk-wrap">
+    <div class="quiz-wrap" id="quiz-kiosk"></div>
+    <div class="kiosk-footer">Touch the screen to begin · Resets automatically after inactivity</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     WIDGET MODE
+═══════════════════════════════════════════════════════════════════════ -->
+<div id="widget-mode" class="hidden">
+  <div class="quiz-wrap" id="quiz-widget" style="max-width:100%;"></div>
+</div>
+
+<script>
+// ─── PET DATABASE ────────────────────────────────────────────────────
+// Costs sourced from: ASPCA, Chewy, A-Z Animals, GEICO, PangoVet (2024-2025)
+const PETS = {
+  dogs: [
+    { icon:'🐕', name:'Cavalier King Charles Spaniel',
+      why:'Gentle, low-energy, and perfectly sized for apartment life. Thrives with families and seniors.',
+      y1:'~$2,200', mo:'~$120/mo', care:'Medium', space:'Small–Med', for:'All ages', life:'9–14 yrs',
+      match: s => s.space==='small' && (s.time==='med'||s.time==='high') },
+    { icon:'🐶', name:'French Bulldog',
+      why:'Apartment-friendly, minimal exercise needs, and wonderfully affectionate indoors.',
+      y1:'~$2,500', mo:'~$130/mo', care:'Medium', space:'Small', for:'All ages', life:'10–12 yrs',
+      match: s => s.space==='small' && s.time==='low' },
+    { icon:'🦮', name:'Labrador Retriever',
+      why:"America's most popular dog — patient with kids and endlessly loyal with space to roam.",
+      y1:'~$1,800', mo:'~$110/mo', care:'Medium–High', space:'Large', for:'All ages', life:'10–12 yrs',
+      match: s => (s.space==='large'||s.space==='xl') && (s.household==='young'||s.household==='older') && s.time==='high' },
+    { icon:'🐕‍🦺', name:'Golden Retriever',
+      why:'Exceptionally patient with young children. Loves space, thrives with active families.',
+      y1:'~$2,000', mo:'~$115/mo', care:'Medium–High', space:'Large', for:'All ages', life:'10–12 yrs',
+      match: s => s.space==='large' && s.household==='young' },
+    { icon:'🐩', name:'Shih Tzu',
+      why:"Friendly lap dog that doesn't need intense exercise. Great for quieter homes.",
+      y1:'~$1,600', mo:'~$100/mo', care:'Medium', space:'Small', for:'Ages 6+', life:'10–18 yrs',
+      match: s => s.space==='small' && (s.household==='couple'||s.household==='solo') },
+  ],
+  cats: [
+    { icon:'🐱', name:'Domestic Shorthair',
+      why:'Adaptable, affectionate, and the most budget-friendly cat. Perfect for first-time owners.',
+      y1:'~$1,100', mo:'~$60/mo', care:'Low–Med', space:'Any', for:'All ages', life:'12–18 yrs',
+      match: s => true },
+    { icon:'🐈', name:'Ragdoll',
+      why:"Docile and gentle — one of the best cats for families with young kids. Rarely scratches.",
+      y1:'~$1,400', mo:'~$70/mo', care:'Medium', space:'Any', for:'All ages', life:'12–17 yrs',
+      match: s => s.household==='young' },
+    { icon:'🐈‍⬛', name:'Maine Coon',
+      why:'Dog-like personality. Loves attention and adapts well to active, spacious households.',
+      y1:'~$1,500', mo:'~$75/mo', care:'Medium', space:'Med–Large', for:'Ages 6+', life:'12–15 yrs',
+      match: s => (s.space==='large'||s.space==='xl') && s.time!=='low' },
+    { icon:'🐈', name:'Siamese',
+      why:'Highly social and vocal. Ideal for someone home often who wants a true companion.',
+      y1:'~$1,200', mo:'~$65/mo', care:'Medium', space:'Any', for:'Ages 8+', life:'15–20 yrs',
+      match: s => (s.household==='solo'||s.household==='couple') && s.time!=='low' },
+  ],
+  fish: [
+    { icon:'🐠', name:'Betta Fish',
+      why:'Stunning, self-sufficient, and perfect for a 5-gal desk or bedroom tank. The ideal first fish.',
+      y1:'~$150', mo:'~$10/mo', care:'Low', space:'Minimal', for:'All ages', life:'2–5 yrs',
+      match: s => s.space==='small' && (s.budget==='low'||s.budget==='mid') && s.time==='low' },
+    { icon:'🐟', name:'Freshwater Community Tank',
+      why:'A 20-gal setup with tetras and corydoras — relaxing, beautiful, and beginner-friendly.',
+      y1:'~$280', mo:'~$20/mo', care:'Low–Med', space:'Small', for:'Ages 8+', life:'3–5 yrs',
+      match: s => s.budget!=='low' && s.time!=='low' },
+    { icon:'🐡', name:'Goldfish',
+      why:'A classic starter pet — low cost, easy to care for, great first pet for young kids.',
+      y1:'~$120', mo:'~$12/mo', care:'Low', space:'Minimal', for:'All ages', life:'10–15 yrs',
+      match: s => s.household==='young' && s.budget==='low' },
+    { icon:'🪸', name:'Saltwater Reef Tank',
+      why:'A stunning showpiece for experienced hobbyists with space and a flexible budget.',
+      y1:'~$800', mo:'~$60/mo', care:'High', space:'Medium', for:'Ages 12+', life:'Varies',
+      match: s => (s.budget==='high'||s.budget==='any') && s.time!=='low' && s.space!=='small' },
+  ],
+  small: [
+    { icon:'🐹', name:'Guinea Pig',
+      why:'Sociable, gentle, and one of the best small pets for families. Rarely bites, loves interaction.',
+      y1:'~$350', mo:'~$40/mo', care:'Low–Med', space:'Small', for:'Ages 6+', life:'4–8 yrs',
+      match: s => s.household==='young'||s.household==='older' },
+    { icon:'🐇', name:'Holland Lop Rabbit',
+      why:'Surprisingly affectionate and litter-trainable. Thrives in spacious, calm homes.',
+      y1:'~$400', mo:'~$50/mo', care:'Medium', space:'Medium', for:'Ages 8+', life:'8–12 yrs',
+      match: s => (s.space==='medium'||s.space==='large') && s.time!=='low' },
+    { icon:'🐭', name:'Hamster',
+      why:'Low-cost, low-space, and independent. A solid first pet for a child in any size home.',
+      y1:'~$150', mo:'~$15/mo', care:'Low', space:'Minimal', for:'Ages 8+', life:'2–3 yrs',
+      match: s => s.budget==='low'||s.space==='small' },
+    { icon:'🐾', name:'Chinchilla',
+      why:'Soft, quiet, and low-allergen. Great for older kids and adults with time to bond.',
+      y1:'~$450', mo:'~$35/mo', care:'Medium', space:'Small', for:'Ages 12+', life:'10–15 yrs',
+      match: s => (s.household==='solo'||s.household==='couple') && s.time!=='low' },
+  ],
+  birds: [
+    { icon:'🦜', name:'Parakeet (Budgie)',
+      why:'Friendly, easy to tame, and chatty without being loud. Most popular pet bird in the US.',
+      y1:'~$250', mo:'~$20/mo', care:'Low–Med', space:'Small', for:'Ages 8+', life:'5–10 yrs',
+      match: s => s.budget!=='any'&&s.space==='small' },
+    { icon:'🐦', name:'Cockatiel',
+      why:'Gentle and social. Can learn to whistle tunes. Excellent for families wanting a bonded bird.',
+      y1:'~$350', mo:'~$25/mo', care:'Medium', space:'Small', for:'Ages 8+', life:'15–20 yrs',
+      match: s => s.household!=='solo'&&s.time!=='low' },
+    { icon:'🦚', name:'Green Cheek Conure',
+      why:'Playful and cuddly — more personality per ounce than almost any other pet.',
+      y1:'~$600', mo:'~$35/mo', care:'Medium–High', space:'Medium', for:'Ages 12+', life:'15–25 yrs',
+      match: s => (s.time==='high'||s.time==='full')&&(s.budget==='high'||s.budget==='any') },
+    { icon:'🐤', name:'Canary',
+      why:'A hands-off song bird. Beautiful to listen to, content to entertain themselves.',
+      y1:'~$200', mo:'~$15/mo', care:'Low', space:'Minimal', for:'All ages', life:'10–15 yrs',
+      match: s => s.time==='low'||s.household==='solo' },
+  ],
+  reptiles: [
+    { icon:'🦎', name:'Leopard Gecko',
+      why:'Calm, easy to handle, thrives in a compact 20-gal tank. The go-to beginner reptile.',
+      y1:'~$300', mo:'~$25/mo', care:'Low', space:'Small', for:'Ages 10+', life:'15–20 yrs',
+      match: s => s.budget!=='any'&&s.time==='low' },
+    { icon:'🦕', name:'Bearded Dragon',
+      why:'Sociable and expressive — more personality than most reptiles, loves being handled.',
+      y1:'~$500', mo:'~$40/mo', care:'Medium', space:'Medium', for:'Ages 10+', life:'10–15 yrs',
+      match: s => s.time!=='low'&&s.space!=='small' },
+    { icon:'🐍', name:'Corn Snake',
+      why:'Docile, low-maintenance, and one of the safest snakes for first-time reptile keepers.',
+      y1:'~$280', mo:'~$20/mo', care:'Low', space:'Small', for:'Ages 12+', life:'15–20 yrs',
+      match: s => s.household==='solo'||s.household==='couple' },
+    { icon:'🦖', name:'Blue-Tongued Skink',
+      why:'Interactive, sturdy, and surprisingly dog-like in personality. For enthusiastic owners.',
+      y1:'~$600', mo:'~$45/mo', care:'Medium', space:'Medium', for:'Ages 12+', life:'15–20 yrs',
+      match: s => (s.budget==='high'||s.budget==='any')&&s.time!=='low' },
+  ]
+};
+
+const QUESTIONS = [
+  { key:'species', label:'Step 1 of 5', q:'What are you interested in?', type:'species',
+    opts:[
+      {val:'dogs',  emoji:'🐕', name:'Dogs',         sub:'Active companion'},
+      {val:'cats',  emoji:'🐈', name:'Cats',         sub:'Independent & playful'},
+      {val:'fish',  emoji:'🐠', name:'Fish',         sub:'Calm & low-maintenance'},
+      {val:'small', emoji:'🐹', name:'Small animals',sub:'Hamsters, rabbits & more'},
+      {val:'birds', emoji:'🦜', name:'Birds',        sub:'Social & vocal'},
+      {val:'reptiles',emoji:'🦎',name:'Reptiles',    sub:'Unique & fascinating'},
+    ]
+  },
+  { key:'space', label:'Step 2 of 5', q:'What\'s your living situation?', type:'list',
+    opts:[
+      {val:'small',  label:'Apartment or condo'},
+      {val:'medium', label:'House, limited outdoor space'},
+      {val:'large',  label:'House with a yard'},
+      {val:'xl',     label:'Large home or rural property'},
+    ]
+  },
+  { key:'household', label:'Step 3 of 5', q:'Who\'s in your household?', type:'list',
+    opts:[
+      {val:'solo',   label:'Just me'},
+      {val:'couple', label:'Couple, no kids'},
+      {val:'young',  label:'Family with young kids (under 8)'},
+      {val:'older',  label:'Family with older kids (8+)'},
+    ]
+  },
+  { key:'time', label:'Step 4 of 5', q:'How much daily time for a pet?', type:'list',
+    opts:[
+      {val:'low',  label:'Under 30 minutes'},
+      {val:'med',  label:'30–60 minutes'},
+      {val:'high', label:'1–2 hours'},
+      {val:'full', label:'2+ hours — very hands-on'},
+    ]
+  },
+  { key:'budget', label:'Step 5 of 5', q:'What\'s your starter budget?', type:'list',
+    opts:[
+      {val:'low',  label:'Under $100'},
+      {val:'mid',  label:'$100–$300'},
+      {val:'high', label:'$300–$600'},
+      {val:'any',  label:'No limit — best fit only'},
+    ]
+  }
+];
+
+// ─── QUIZ CLASS ──────────────────────────────────────────────────────
+function createQuiz(container) {
+  let step = 0;
+  const answers = {};
+  const total = QUESTIONS.length;
+
+  function pct() { return Math.round(((step+1)/total)*100); }
+
+  function render() {
+    if (step >= total) { renderResult(); return; }
+    const q = QUESTIONS[step];
+    const selVal = answers[q.key];
+
+    let optsHtml = '';
+    if (q.type === 'species') {
+      optsHtml = `<div class="species-grid">` +
+        q.opts.map(o => `
+          <div class="species-tile${selVal===o.val?' sel':''}" data-key="${q.key}" data-val="${o.val}">
+            <span class="species-emoji">${o.emoji}</span>
+            <div class="species-name">${o.name}</div>
+            <div class="species-sub">${o.sub}</div>
+          </div>`).join('') + `</div>`;
+    } else {
+      optsHtml = `<div class="opt-list">` +
+        q.opts.map(o => `
+          <div class="opt-item${selVal===o.val?' sel':''}" data-key="${q.key}" data-val="${o.val}">
+            ${o.label}
+          </div>`).join('') + `</div>`;
+    }
+
+    container.innerHTML = `
+      <div class="quiz-header">
+        <div class="quiz-logo"><span class="quiz-logo-dot"></span>PetDex</div>
+        <div class="quiz-step-label">${q.label}</div>
+      </div>
+      <div class="quiz-progress"><div class="quiz-progress-fill" style="width:${pct()}%"></div></div>
+      <div class="quiz-body">
+        <div class="quiz-q-label">${q.label}</div>
+        <div class="quiz-q-text">${q.q}</div>
+        ${optsHtml}
+        <div class="quiz-nav">
+          ${step>0 ? '<button class="quiz-back" id="qbk">‹ Back</button>' : '<span></span>'}
+          <span class="quiz-count">Question ${step+1} of ${total}</span>
+          <button class="quiz-next" id="qnx" ${selVal?'':'disabled'}>
+            ${step===total-1?'See my match ›':'Next ›'}
+          </button>
+        </div>
+      </div>`;
+
+    container.querySelectorAll('.species-tile, .opt-item').forEach(el => {
+      el.addEventListener('click', () => {
+        answers[el.dataset.key] = el.dataset.val;
+        container.querySelectorAll(`[data-key="${el.dataset.key}"]`).forEach(e=>e.classList.remove('sel'));
+        el.classList.add('sel');
+        const nx = container.querySelector('#qnx');
+        if (nx) nx.disabled = false;
+      });
+    });
+    const nx = container.querySelector('#qnx');
+    const bk = container.querySelector('#qbk');
+    if (nx) nx.addEventListener('click', () => { step++; render(); });
+    if (bk) bk.addEventListener('click', () => { step--; render(); });
+  }
+
+  function renderResult() {
+    const s = answers;
+    const pool = PETS[s.species] || [];
+    const match = pool.find(p => p.match(s)) || pool[0];
+
+    container.innerHTML = `
+      <div class="quiz-header">
+        <div class="quiz-logo"><span class="quiz-logo-dot"></span>PetDex</div>
+        <div class="quiz-step-label">Your match</div>
+      </div>
+      <div class="quiz-progress"><div class="quiz-progress-fill" style="width:100%"></div></div>
+      <div class="quiz-body">
+        <div class="result-badge">✓ Best match for you</div>
+        <div class="result-pet-block">
+          <div class="result-icon">${match.icon}</div>
+          <div class="result-name">${match.name}</div>
+          <div class="result-why">${match.why}</div>
+          <div class="result-row"><span class="result-row-l">Year 1 cost</span><span class="result-row-v">${match.y1}</span></div>
+          <div class="result-row"><span class="result-row-l">Monthly (after year 1)</span><span class="result-row-v">${match.mo}</span></div>
+          <div class="result-row"><span class="result-row-l">Care level</span><span class="result-row-v">${match.care}</span></div>
+          <div class="result-row"><span class="result-row-l">Space needed</span><span class="result-row-v">${match.space}</span></div>
+          <div class="result-row"><span class="result-row-l">Best for</span><span class="result-row-v">${match.for}</span></div>
+          <div class="result-row"><span class="result-row-l">Lifespan</span><span class="result-row-v">${match.life}</span></div>
+        </div>
+        <div class="qr-row">
+          <div class="qr-sq">
+            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1" y="1" width="10" height="10" rx="1" fill="white"/>
+              <rect x="2.2" y="2.2" width="7.6" height="7.6" fill="#1a1a1a"/>
+              <rect x="3.5" y="3.5" width="5" height="5" fill="white"/>
+              <rect x="17" y="1" width="10" height="10" rx="1" fill="white"/>
+              <rect x="18.2" y="2.2" width="7.6" height="7.6" fill="#1a1a1a"/>
+              <rect x="19.5" y="3.5" width="5" height="5" fill="white"/>
+              <rect x="1" y="17" width="10" height="10" rx="1" fill="white"/>
+              <rect x="2.2" y="18.2" width="7.6" height="7.6" fill="#1a1a1a"/>
+              <rect x="3.5" y="19.5" width="5" height="5" fill="white"/>
+              <rect x="17" y="17" width="3" height="3" fill="white"/>
+              <rect x="22" y="17" width="3" height="3" fill="white"/>
+              <rect x="17" y="22" width="3" height="3" fill="white"/>
+              <rect x="22" y="22" width="3" height="3" fill="white"/>
+              <rect x="19.5" y="19.5" width="2" height="2" fill="white"/>
+            </svg>
+          </div>
+          <div class="qr-txt">
+            <strong>Scan to open your starter cart</strong>
+            <span>All items pre-added · Ready at checkout</span>
+          </div>
+        </div>
+        <button class="btn-restart" id="qrst">← Start over</button>
+      </div>`;
+
+    container.querySelector('#qrst').addEventListener('click', () => {
+      step = 0; Object.keys(answers).forEach(k=>delete answers[k]); render();
+    });
+  }
+
+  render();
+}
+
+// ─── MODE DETECTION & INIT ───────────────────────────────────────────
+(function init() {
+  const params = new URLSearchParams(window.location.search);
+  const mode = params.get('mode') || 'demo';
+
+  if (mode === 'kiosk') {
+    document.body.classList.add('kiosk');
+    document.getElementById('demo-mode').classList.add('hidden');
+    document.getElementById('kiosk-mode').classList.remove('hidden');
+    createQuiz(document.getElementById('quiz-kiosk'));
+
+    // Auto-reset on inactivity
+    const resetMs = (parseInt(params.get('reset'))||300) * 1000;
+    let timer;
+    function resetTimer() {
+      clearTimeout(timer);
+      timer = setTimeout(() => createQuiz(document.getElementById('quiz-kiosk')), resetMs);
+    }
+    ['touchstart','click','keydown'].forEach(e => document.addEventListener(e, resetTimer));
+    resetTimer();
+
+  } else if (mode === 'widget') {
+    document.body.classList.add('widget');
+    document.getElementById('demo-mode').classList.add('hidden');
+    document.getElementById('widget-mode').classList.remove('hidden');
+    createQuiz(document.getElementById('quiz-widget'));
+
+    // Retailer branding via params
+    const primary = params.get('color');
+    if (primary) document.documentElement.style.setProperty('--g', '#'+primary);
+
+  } else {
+    // Demo / landing page mode
+    createQuiz(document.getElementById('quiz-demo'));
+  }
+})();
+</script>
+</body>
+</html>
