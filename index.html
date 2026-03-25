@@ -311,12 +311,27 @@ body {
 .qr-txt strong { display: block; font-weight: 500; color: var(--text); margin-bottom: 1px; }
 .qr-txt span { color: var(--muted); }
 .btn-restart {
-  width: 100%; padding: 9px; background: none;
+  flex: 1; padding: 9px; background: none;
   border: 1px solid var(--border); border-radius: 9px;
   font-family: var(--body-font); font-size: 12px; color: var(--muted);
   cursor: pointer; transition: all .15s;
 }
 .btn-restart:hover { border-color: var(--g); color: var(--gd); }
+.btn-notforme {
+  flex: 1; padding: 9px; background: none;
+  border: 1px solid var(--co); border-radius: 9px;
+  font-family: var(--body-font); font-size: 12px; color: var(--co);
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.btn-notforme:hover { background: var(--cl); }
+.btn-guide {
+  display: block; width: 100%; padding: 9px; margin-top: 8px;
+  background: var(--gl); border: 1px solid var(--g); border-radius: 9px;
+  font-family: var(--body-font); font-size: 12px; font-weight: 500;
+  color: var(--gd); text-align: center; text-decoration: none;
+  cursor: pointer; transition: all .15s;
+}
+.btn-guide:hover { background: var(--g); color: #fff; }
 
 /* ─── KIOSK MODE ───────────────────────────────────────────────────── */
 body.kiosk {
@@ -584,112 +599,137 @@ const PETS = {
     { icon:'🐕', name:'Cavalier King Charles Spaniel',
       why:'Gentle, low-energy, and perfectly sized for apartment life. Thrives with families and seniors.',
       y1:'~$2,200', mo:'~$120/mo', care:'Medium', space:'Small–Med', for:'All ages', life:'9–14 yrs',
+      guide:'https://www.petsmart.com/learning-center/dog-care',
       match: s => s.space==='small' && (s.time==='med'||s.time==='high') },
     { icon:'🐶', name:'French Bulldog',
       why:'Apartment-friendly, minimal exercise needs, and wonderfully affectionate indoors.',
       y1:'~$2,500', mo:'~$130/mo', care:'Medium', space:'Small', for:'All ages', life:'10–12 yrs',
+      guide:'https://www.petsmart.com/learning-center/dog-care',
       match: s => s.space==='small' && s.time==='low' },
     { icon:'🦮', name:'Labrador Retriever',
       why:"America's most popular dog — patient with kids and endlessly loyal with space to roam.",
       y1:'~$1,800', mo:'~$110/mo', care:'Medium–High', space:'Large', for:'All ages', life:'10–12 yrs',
+      guide:'https://www.petsmart.com/learning-center/dog-care',
       match: s => (s.space==='large'||s.space==='xl') && (s.household==='young'||s.household==='older') && s.time==='high' },
     { icon:'🐕‍🦺', name:'Golden Retriever',
       why:'Exceptionally patient with young children. Loves space, thrives with active families.',
       y1:'~$2,000', mo:'~$115/mo', care:'Medium–High', space:'Large', for:'All ages', life:'10–12 yrs',
+      guide:'https://www.petsmart.com/learning-center/dog-care',
       match: s => s.space==='large' && s.household==='young' },
     { icon:'🐩', name:'Shih Tzu',
       why:"Friendly lap dog that doesn't need intense exercise. Great for quieter homes.",
       y1:'~$1,600', mo:'~$100/mo', care:'Medium', space:'Small', for:'Ages 6+', life:'10–18 yrs',
+      guide:'https://www.petsmart.com/learning-center/dog-care',
       match: s => s.space==='small' && (s.household==='couple'||s.household==='solo') },
   ],
   cats: [
     { icon:'🐱', name:'Domestic Shorthair',
       why:'Adaptable, affectionate, and the most budget-friendly cat. Perfect for first-time owners.',
       y1:'~$1,100', mo:'~$60/mo', care:'Low–Med', space:'Any', for:'All ages', life:'12–18 yrs',
+      guide:'https://www.petsmart.com/learning-center/cat-care',
       match: s => true },
     { icon:'🐈', name:'Ragdoll',
       why:"Docile and gentle — one of the best cats for families with young kids. Rarely scratches.",
       y1:'~$1,400', mo:'~$70/mo', care:'Medium', space:'Any', for:'All ages', life:'12–17 yrs',
+      guide:'https://www.petsmart.com/learning-center/cat-care',
       match: s => s.household==='young' },
     { icon:'🐈‍⬛', name:'Maine Coon',
       why:'Dog-like personality. Loves attention and adapts well to active, spacious households.',
       y1:'~$1,500', mo:'~$75/mo', care:'Medium', space:'Med–Large', for:'Ages 6+', life:'12–15 yrs',
+      guide:'https://www.petsmart.com/learning-center/cat-care',
       match: s => (s.space==='large'||s.space==='xl') && s.time!=='low' },
     { icon:'🐈', name:'Siamese',
       why:'Highly social and vocal. Ideal for someone home often who wants a true companion.',
       y1:'~$1,200', mo:'~$65/mo', care:'Medium', space:'Any', for:'Ages 8+', life:'15–20 yrs',
+      guide:'https://www.petsmart.com/learning-center/cat-care',
       match: s => (s.household==='solo'||s.household==='couple') && s.time!=='low' },
   ],
   fish: [
     { icon:'🐠', name:'Betta Fish',
       why:'Stunning, self-sufficient, and perfect for a 5-gal desk or bedroom tank. The ideal first fish.',
       y1:'~$150', mo:'~$10/mo', care:'Low', space:'Minimal', for:'All ages', life:'2–5 yrs',
+      guide:'https://www.petsmart.com/learning-center/fish-care',
       match: s => s.space==='small' && (s.budget==='low'||s.budget==='mid') && s.time==='low' },
     { icon:'🐟', name:'Freshwater Community Tank',
       why:'A 20-gal setup with tetras and corydoras — relaxing, beautiful, and beginner-friendly.',
       y1:'~$280', mo:'~$20/mo', care:'Low–Med', space:'Small', for:'Ages 8+', life:'3–5 yrs',
+      guide:'https://www.petsmart.com/learning-center/fish-care',
       match: s => s.budget!=='low' && s.time!=='low' },
     { icon:'🐡', name:'Goldfish',
       why:'A classic starter pet — low cost, easy to care for, great first pet for young kids.',
       y1:'~$120', mo:'~$12/mo', care:'Low', space:'Minimal', for:'All ages', life:'10–15 yrs',
+      guide:'https://www.petsmart.com/learning-center/fish-care',
       match: s => s.household==='young' && s.budget==='low' },
     { icon:'🪸', name:'Saltwater Reef Tank',
       why:'A stunning showpiece for experienced hobbyists with space and a flexible budget.',
       y1:'~$800', mo:'~$60/mo', care:'High', space:'Medium', for:'Ages 12+', life:'Varies',
+      guide:'https://www.petsmart.com/learning-center/fish-care',
       match: s => (s.budget==='high'||s.budget==='any') && s.time!=='low' && s.space!=='small' },
   ],
   small: [
     { icon:'🐹', name:'Guinea Pig',
       why:'Sociable, gentle, and one of the best small pets for families. Rarely bites, loves interaction.',
       y1:'~$350', mo:'~$40/mo', care:'Low–Med', space:'Small', for:'Ages 6+', life:'4–8 yrs',
+      guide:'https://www.petsmart.com/learning-center/small-pet-care/guinea-pig-care-guide/A0176.html',
       match: s => s.household==='young'||s.household==='older' },
     { icon:'🐇', name:'Holland Lop Rabbit',
       why:'Surprisingly affectionate and litter-trainable. Thrives in spacious, calm homes.',
       y1:'~$400', mo:'~$50/mo', care:'Medium', space:'Medium', for:'Ages 8+', life:'8–12 yrs',
+      guide:'https://www.petsmart.com/learning-center/small-pet-care',
       match: s => (s.space==='medium'||s.space==='large') && s.time!=='low' },
     { icon:'🐭', name:'Hamster',
       why:'Low-cost, low-space, and independent. A solid first pet for a child in any size home.',
       y1:'~$150', mo:'~$15/mo', care:'Low', space:'Minimal', for:'Ages 8+', life:'2–3 yrs',
+      guide:'https://www.petsmart.com/learning-center/small-pet-care',
       match: s => s.budget==='low'||s.space==='small' },
     { icon:'🐾', name:'Chinchilla',
       why:'Soft, quiet, and low-allergen. Great for older kids and adults with time to bond.',
       y1:'~$450', mo:'~$35/mo', care:'Medium', space:'Small', for:'Ages 12+', life:'10–15 yrs',
+      guide:'https://www.petsmart.com/learning-center/small-pet-care',
       match: s => (s.household==='solo'||s.household==='couple') && s.time!=='low' },
   ],
   birds: [
     { icon:'🦜', name:'Parakeet (Budgie)',
       why:'Friendly, easy to tame, and chatty without being loud. Most popular pet bird in the US.',
       y1:'~$250', mo:'~$20/mo', care:'Low–Med', space:'Small', for:'Ages 8+', life:'5–10 yrs',
+      guide:'https://www.petsmart.com/learning-center/bird-care/parakeet-care-guide/A0014.html',
       match: s => s.budget!=='any'&&s.space==='small' },
     { icon:'🐦', name:'Cockatiel',
       why:'Gentle and social. Can learn to whistle tunes. Excellent for families wanting a bonded bird.',
       y1:'~$350', mo:'~$25/mo', care:'Medium', space:'Small', for:'Ages 8+', life:'15–20 yrs',
+      guide:'https://www.petsmart.com/learning-center/bird-care/cockatiel-care-guide/A0065.html',
       match: s => s.household!=='solo'&&s.time!=='low' },
     { icon:'🦚', name:'Green Cheek Conure',
       why:'Playful and cuddly — more personality per ounce than almost any other pet.',
       y1:'~$600', mo:'~$35/mo', care:'Medium–High', space:'Medium', for:'Ages 12+', life:'15–25 yrs',
+      guide:'https://www.petsmart.com/learning-center/bird-care',
       match: s => (s.time==='high'||s.time==='full')&&(s.budget==='high'||s.budget==='any') },
     { icon:'🐤', name:'Canary',
       why:'A hands-off song bird. Beautiful to listen to, content to entertain themselves.',
       y1:'~$200', mo:'~$15/mo', care:'Low', space:'Minimal', for:'All ages', life:'10–15 yrs',
+      guide:'https://www.petsmart.com/learning-center/bird-care',
       match: s => s.time==='low'||s.household==='solo' },
   ],
   reptiles: [
     { icon:'🦎', name:'Leopard Gecko',
       why:'Calm, easy to handle, thrives in a compact 20-gal tank. The go-to beginner reptile.',
       y1:'~$300', mo:'~$25/mo', care:'Low', space:'Small', for:'Ages 10+', life:'15–20 yrs',
+      guide:'https://www.petsmart.com/learning-center/reptile-care/leopard-gecko-care-guide',
       match: s => s.budget!=='any'&&s.time==='low' },
     { icon:'🦕', name:'Bearded Dragon',
       why:'Sociable and expressive — more personality than most reptiles, loves being handled.',
       y1:'~$500', mo:'~$40/mo', care:'Medium', space:'Medium', for:'Ages 10+', life:'10–15 yrs',
+      guide:'https://www.petsmart.com/learning-center/reptile-care/bearded-dragon-care-guide/A0015.html',
       match: s => s.time!=='low'&&s.space!=='small' },
     { icon:'🐍', name:'Corn Snake',
       why:'Docile, low-maintenance, and one of the safest snakes for first-time reptile keepers.',
       y1:'~$280', mo:'~$20/mo', care:'Low', space:'Small', for:'Ages 12+', life:'15–20 yrs',
+      guide:'https://www.petsmart.com/learning-center/reptile-care',
       match: s => s.household==='solo'||s.household==='couple' },
     { icon:'🦖', name:'Blue-Tongued Skink',
       why:'Interactive, sturdy, and surprisingly dog-like in personality. For enthusiastic owners.',
       y1:'~$600', mo:'~$45/mo', care:'Medium', space:'Medium', for:'Ages 12+', life:'15–20 yrs',
+      guide:'https://www.petsmart.com/learning-center/reptile-care',
       match: s => (s.budget==='high'||s.budget==='any')&&s.time!=='low' },
   ]
 };
@@ -803,19 +843,125 @@ function createQuiz(container) {
     if (bk) bk.addEventListener('click', () => { step--; render(); });
   }
 
-  function renderResult() {
-    const s = answers;
-    const pool = PETS[s.species] || [];
-    const match = pool.find(p => p.match(s)) || pool[0];
+  const QR_SVG = `<svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="1" width="10" height="10" rx="1" fill="white"/>
+    <rect x="2.2" y="2.2" width="7.6" height="7.6" fill="#1a1a1a"/>
+    <rect x="3.5" y="3.5" width="5" height="5" fill="white"/>
+    <rect x="17" y="1" width="10" height="10" rx="1" fill="white"/>
+    <rect x="18.2" y="2.2" width="7.6" height="7.6" fill="#1a1a1a"/>
+    <rect x="19.5" y="3.5" width="5" height="5" fill="white"/>
+    <rect x="1" y="17" width="10" height="10" rx="1" fill="white"/>
+    <rect x="2.2" y="18.2" width="7.6" height="7.6" fill="#1a1a1a"/>
+    <rect x="3.5" y="19.5" width="5" height="5" fill="white"/>
+    <rect x="17" y="17" width="3" height="3" fill="white"/>
+    <rect x="22" y="17" width="3" height="3" fill="white"/>
+    <rect x="17" y="22" width="3" height="3" fill="white"/>
+    <rect x="22" y="22" width="3" height="3" fill="white"/>
+    <rect x="19.5" y="19.5" width="2" height="2" fill="white"/>
+  </svg>`;
 
+  // Follow-up questions shown after "not for me"
+  const FOLLOWUP = [
+    { key:'concern', q:'What didn\'t feel right?', opts:[
+      {val:'cost',      label:'Too expensive'},
+      {val:'space',     label:'Needs too much space'},
+      {val:'time',      label:'Too much daily care'},
+      {val:'kids',      label:'Not great for my kids\' age'},
+      {val:'lifespan',  label:'Lifespan is too long or short'},
+    ]},
+    { key:'opento', q:'What matters most to you?', opts:[
+      {val:'low-cost',    label:'Keeping costs low'},
+      {val:'low-care',    label:'Minimal daily care'},
+      {val:'interactive', label:'Something interactive & hands-on'},
+      {val:'calm',        label:'Something calm & easy to observe'},
+      {val:'kid-safe',    label:'Very safe for young children'},
+    ]}
+  ];
+
+  // Re-match logic: picks best alternate species + animal based on follow-up answers
+  function rematch(original, concern, opento) {
+    // Build a priority order of species to try, excluding the original
+    const allSpecies = ['dogs','cats','fish','small','birds','reptiles'];
+    const s = answers;
+
+    // Score each species based on concern + opento
+    function speciesScore(sp) {
+      if (sp === original) return -1;
+      let score = 0;
+      if (concern === 'cost') {
+        if (sp === 'fish') score += 3;
+        if (sp === 'small') score += 2;
+        if (sp === 'birds') score += 1;
+        if (sp === 'dogs') score -= 2;
+      }
+      if (concern === 'space') {
+        if (sp === 'fish') score += 3;
+        if (sp === 'small') score += 2;
+        if (sp === 'cats') score += 1;
+        if (sp === 'dogs') score -= 2;
+      }
+      if (concern === 'time') {
+        if (sp === 'fish') score += 3;
+        if (sp === 'reptiles') score += 2;
+        if (sp === 'cats') score += 1;
+        if (sp === 'dogs') score -= 2;
+        if (sp === 'birds') score -= 1;
+      }
+      if (concern === 'kids') {
+        if (sp === 'small') score += 3;
+        if (sp === 'dogs') score += 2;
+        if (sp === 'cats') score += 1;
+        if (sp === 'reptiles') score -= 1;
+      }
+      if (concern === 'lifespan') {
+        if (sp === 'small') score += 2;
+        if (sp === 'fish') score += 1;
+        if (sp === 'reptiles') score -= 1;
+        if (sp === 'dogs') score -= 1;
+      }
+      if (opento === 'low-cost') {
+        if (sp === 'fish') score += 2;
+        if (sp === 'small') score += 1;
+      }
+      if (opento === 'low-care') {
+        if (sp === 'fish') score += 2;
+        if (sp === 'reptiles') score += 1;
+        if (sp === 'cats') score += 1;
+      }
+      if (opento === 'interactive') {
+        if (sp === 'dogs') score += 2;
+        if (sp === 'birds') score += 1;
+        if (sp === 'small') score += 1;
+      }
+      if (opento === 'calm') {
+        if (sp === 'fish') score += 2;
+        if (sp === 'cats') score += 1;
+        if (sp === 'reptiles') score += 1;
+      }
+      if (opento === 'kid-safe') {
+        if (sp === 'small') score += 2;
+        if (sp === 'dogs') score += 1;
+        if (sp === 'fish') score += 1;
+      }
+      return score;
+    }
+
+    const ranked = allSpecies.filter(sp=>sp!==original).sort((a,b)=>speciesScore(b)-speciesScore(a));
+    const bestSpecies = ranked[0];
+    const pool = PETS[bestSpecies] || [];
+    const pet = pool.find(p => p.match(s)) || pool[0];
+    return { species: bestSpecies, pet };
+  }
+
+  function renderResultCard(match, badge, onNotForMe, onRestart) {
     container.innerHTML = `
       <div class="quiz-header">
         <div class="quiz-logo"><span class="quiz-logo-dot"></span>PetDex</div>
-        <div class="quiz-step-label">Your match</div>
+        <div class="quiz-step-label">${badge === 'final' ? 'Alternative match' : 'Your match'}</div>
       </div>
       <div class="quiz-progress"><div class="quiz-progress-fill" style="width:100%"></div></div>
       <div class="quiz-body">
-        <div class="result-badge">✓ Best match for you</div>
+        <div class="result-badge">${badge === 'final' ? '✦ Alternative pick for you' : '✓ Best match for you'}</div>
         <div class="result-pet-block">
           <div class="result-icon">${match.icon}</div>
           <div class="result-name">${match.name}</div>
@@ -828,35 +974,98 @@ function createQuiz(container) {
           <div class="result-row"><span class="result-row-l">Lifespan</span><span class="result-row-v">${match.life}</span></div>
         </div>
         <div class="qr-row">
-          <div class="qr-sq">
-            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="1" y="1" width="10" height="10" rx="1" fill="white"/>
-              <rect x="2.2" y="2.2" width="7.6" height="7.6" fill="#1a1a1a"/>
-              <rect x="3.5" y="3.5" width="5" height="5" fill="white"/>
-              <rect x="17" y="1" width="10" height="10" rx="1" fill="white"/>
-              <rect x="18.2" y="2.2" width="7.6" height="7.6" fill="#1a1a1a"/>
-              <rect x="19.5" y="3.5" width="5" height="5" fill="white"/>
-              <rect x="1" y="17" width="10" height="10" rx="1" fill="white"/>
-              <rect x="2.2" y="18.2" width="7.6" height="7.6" fill="#1a1a1a"/>
-              <rect x="3.5" y="19.5" width="5" height="5" fill="white"/>
-              <rect x="17" y="17" width="3" height="3" fill="white"/>
-              <rect x="22" y="17" width="3" height="3" fill="white"/>
-              <rect x="17" y="22" width="3" height="3" fill="white"/>
-              <rect x="22" y="22" width="3" height="3" fill="white"/>
-              <rect x="19.5" y="19.5" width="2" height="2" fill="white"/>
-            </svg>
-          </div>
+          <div class="qr-sq">${QR_SVG}</div>
           <div class="qr-txt">
             <strong>Scan to open your starter cart</strong>
             <span>All items pre-added · Ready at checkout</span>
           </div>
         </div>
-        <button class="btn-restart" id="qrst">← Start over</button>
+        <a class="btn-guide" href="${match.guide}" target="_blank" rel="noopener">
+          📖 Full care guide on PetSmart →
+        </a>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          ${onNotForMe ? '<button class="btn-notforme" id="qnfm">Not for me →</button>' : ''}
+          <button class="btn-restart" id="qrst" style="flex:1;">← Start over</button>
+        </div>
       </div>`;
 
     container.querySelector('#qrst').addEventListener('click', () => {
       step = 0; Object.keys(answers).forEach(k=>delete answers[k]); render();
     });
+    if (onNotForMe) {
+      container.querySelector('#qnfm').addEventListener('click', onNotForMe);
+    }
+  }
+
+  function renderFollowUp(originalMatch) {
+    let fStep = 0;
+    const fAnswers = {};
+
+    function renderFQ() {
+      const fq = FOLLOWUP[fStep];
+      const selVal = fAnswers[fq.key];
+      container.innerHTML = `
+        <div class="quiz-header">
+          <div class="quiz-logo"><span class="quiz-logo-dot"></span>PetDex</div>
+          <div class="quiz-step-label">Let's find a better fit</div>
+        </div>
+        <div class="quiz-progress"><div class="quiz-progress-fill" style="width:${fStep===0?50:85}%"></div></div>
+        <div class="quiz-body">
+          <div class="quiz-q-label">${fStep===0 ? 'Follow-up 1 of 2' : 'Follow-up 2 of 2'}</div>
+          <div class="quiz-q-text">${fq.q}</div>
+          <div class="opt-list">
+            ${fq.opts.map(o=>`
+              <div class="opt-item${selVal===o.val?' sel':''}" data-key="${fq.key}" data-val="${o.val}">
+                ${o.label}
+              </div>`).join('')}
+          </div>
+          <div class="quiz-nav">
+            <button class="quiz-back" id="fqbk">${fStep===0 ? '‹ Back to result' : '‹ Back'}</button>
+            <span class="quiz-count">Question ${fStep+1} of 2</span>
+            <button class="quiz-next" id="fqnx" ${selVal?'':'disabled'}>
+              ${fStep===0 ? 'Next ›' : 'Show me a match ›'}
+            </button>
+          </div>
+        </div>`;
+
+      container.querySelectorAll('.opt-item').forEach(el => {
+        el.addEventListener('click', () => {
+          fAnswers[el.dataset.key] = el.dataset.val;
+          container.querySelectorAll(`[data-key="${el.dataset.key}"]`).forEach(e=>e.classList.remove('sel'));
+          el.classList.add('sel');
+          const nx = container.querySelector('#fqnx');
+          if (nx) nx.disabled = false;
+        });
+      });
+
+      container.querySelector('#fqbk').addEventListener('click', () => {
+        if (fStep === 0) {
+          renderResultCard(originalMatch, 'first',
+            () => renderFollowUp(originalMatch),
+            null);
+        } else {
+          fStep--; renderFQ();
+        }
+      });
+
+      container.querySelector('#fqnx').addEventListener('click', () => {
+        if (fStep === 0) { fStep++; renderFQ(); }
+        else {
+          // Both follow-ups answered — rematch
+          const { species, pet } = rematch(answers.species, fAnswers.concern, fAnswers.opento);
+          renderResultCard(pet, 'final', null, null);
+        }
+      });
+    }
+
+    renderFQ();
+  }
+
+  function renderResult() {
+    const s = answers;
+    const pool = PETS[s.species] || [];
+    const match = pool.find(p => p.match(s)) || pool[0];
+    renderResultCard(match, 'first', () => renderFollowUp(match), null);
   }
 
   render();
